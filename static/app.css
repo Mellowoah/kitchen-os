@@ -95,3 +95,5 @@ table.k th{color:var(--mute);font-size:11px;text-transform:uppercase}
 .item .t small{display:block}
 .item a.find{background:#fff;border:1.5px solid #F2C9A4;color:#8A3C0E;border-radius:999px;padding:3px 10px;font-weight:700;text-decoration:none;font-size:12.5px}
 .item{flex-wrap:wrap}.item .finds{flex-basis:100%;margin-top:2px}
+.sendrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:8px;margin-top:14px}.sendrow .b{padding:13px 8px;font-size:15px;text-align:center;text-decoration:none;display:block}.sendrow #copy{grid-column:1/-1;font-size:16px}
+.sendrow a.b{border-radius:14px;font-weight:700;background:var(--soft);color:#8A3C0E}.sendrow button.b.primary{grid-column:1/-1;padding:14px}.sendrow button.b{padding:13px 8px;font-size:15px}.sendrow #copy{font-size:16px}

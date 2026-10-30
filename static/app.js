@@ -14,6 +14,9 @@ function listText(shop){
   const secs=[['need_soon','Need soon'],['running_low','Running low'],['recommended','Recommended']];
   return secs.filter(([k])=>shop[k].length).map(([k,l])=>l+':\n'+shop[k].map(x=>'- '+x.name).join('\n')).join('\n\n');
 }
+const IS_IOS = /iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
+function mailtoHref(t){ return 'mailto:?subject=' + encodeURIComponent('Shopping list') + '&body=' + encodeURIComponent(t); }
+function smsHref(t){ return 'sms:' + (IS_IOS ? '&' : '?') + 'body=' + encodeURIComponent(t); }
 async function copyText(t){
   try { await navigator.clipboard.writeText(t); return true; } catch(e){}
   try { const a=document.createElement('textarea'); a.value=t; a.style.position='fixed'; a.style.opacity='0'; document.body.appendChild(a); a.select(); const ok=document.execCommand('copy'); a.remove(); return ok; } catch(e){ return false; }
@@ -221,12 +224,14 @@ async function viewShop(){
   m.innerHTML = `<h2>Shopping</h2><p class="sub">Built automatically from what dinner needs and what's probably running out. These are guesses, not a count.</p>
     ${sec.map(([k,l])=>`<h3>${l}</h3>${ui.shop[k].length?ui.shop[k].map((x,i)=>`<div class="item"><div class="t"><b>${esc(x.name)}</b><small>${esc(x.why)}${x.price?` · ~$${x.price.toFixed(2)}`:''}</small></div><button data-bought="${k}|${i}">Got it</button><button class="x" data-dis="${k}|${i}" aria-label="Not needed">✕</button><div class="finds"><span>Find it:</span>${storeLinks(x.name)}</div></div>`).join(''):'<p class="tiny">Nothing right now.</p>'}`).join('')}
     <div style="display:flex;gap:8px;margin-top:14px"><input type="text" id="newi" placeholder="Add something (e.g. paper towels)"><button class="b" id="addi" style="padding:0 16px">Add</button></div>
-    <button class="b primary" style="width:100%;margin-top:14px;font-size:16px" id="copy">Copy list</button>
+    <div class="sendrow"><button class="b primary" id="copy">Copy list</button><a class="b" id="mail" href="#">Email list</a><a class="b" id="sms" href="#">Text list</a>${navigator.share?'<button class="b" id="share">Share</button>':''}</div>
     <p class="tiny">Need-soon total ≈ $${total.toFixed(0)} (rough guess). "Find it" opens a search on the store's own site in a new tab. Nothing is ordered and no login is needed.</p>`;
   m.querySelectorAll('[data-bought]').forEach(b=>b.onclick=async()=>{ const [k,i]=b.dataset.bought.split('|'); const r=await api('shopping/bought',{name:ui.shop[k][+i].name}); setState(r.state); ui.shop=r.shopping; ui.tonight=null; ui.week=null; viewShop(); toast('Added to what I think you have'); });
   m.querySelectorAll('[data-dis]').forEach(b=>b.onclick=async()=>{ const [k,i]=b.dataset.dis.split('|'); const r=await api('shopping/dismiss',{name:ui.shop[k][+i].name}); setState(r.state); ui.shop=r.shopping; viewShop(); });
   const add = async () => { const v=$('#newi').value.trim(); if(!v) return; const r=await api('assistant',{message:'add '+v+' to the shopping list'}); setState(r.state); ui.shop=null; viewShop(); };
   $('#addi').onclick=add; $('#newi').onkeydown=e=>{ if(e.key==='Enter') add(); };
+  const setLinks=()=>{ const t=listText(ui.shop); $('#mail').href=mailtoHref(t); $('#sms').href=smsHref(t); }; setLinks();
+  if ($('#share')) $('#share').onclick=async()=>{ try { await navigator.share({title:'Shopping list', text:listText(ui.shop)}); } catch(e){} };
   $('#copy').onclick=async()=>{ const ok=await copyText(listText(ui.shop)); toast(ok?'Shopping list copied':'Couldn\'t copy - select and copy it manually'); };
 }
 

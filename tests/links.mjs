@@ -35,6 +35,11 @@ await p.evaluate(() => { window.__c = null; Object.defineProperty(navigator, "cl
 await p.evaluate(() => document.querySelector("#copy").click());
 await new Promise(r => setTimeout(r, 400));
 console.log("copied:\n" + (await p.evaluate(() => window.__c)));
+const send = await p.evaluate(() => ({ mail: document.querySelector("#mail").href, sms: document.querySelector("#sms").href, share: !!document.querySelector("#share") }));
+console.log("mail:", decodeURIComponent(send.mail).replace(/\n/g, "|"));
+console.log("sms:", decodeURIComponent(send.sms).replace(/\n/g, "|"));
+if (!send.mail.startsWith("mailto:?subject=Shopping%20list&body=") || !/^sms:[&?]body=/.test(send.sms)) { console.log("BAD send links"); process.exit(1); }
+await p.evaluate(() => window.scrollTo(0, document.body.scrollHeight)); await new Promise(r => setTimeout(r, 3200));
 await p.screenshot({ path: "shots/shopping-links.png" });
 await b.close();
 process.exit(bad ? 1 : 0);
