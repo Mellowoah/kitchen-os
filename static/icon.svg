@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFA24A"/>
+      <stop offset="1" stop-color="#E4503A"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFC247"/>
+      <stop offset="1" stop-color="#FF7A2F"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <!-- plate -->
+  <circle cx="512" cy="530" r="300" fill="#FFF4E2"/>
+  <circle cx="512" cy="530" r="300" fill="none" stroke="#F3D9B3" stroke-width="14"/>
+  <circle cx="512" cy="530" r="215" fill="none" stroke="#F3D9B3" stroke-width="10"/>
+  <!-- sparkle on the plate -->
+  <path d="M512 380 C524 470 572 518 662 530 C572 542 524 590 512 680 C500 590 452 542 362 530 C452 518 500 470 512 380 Z" fill="url(#gold)"/>
+  <!-- small sparkle -->
+  <path d="M790 210 C795 248 812 265 850 270 C812 275 795 292 790 330 C785 292 768 275 730 270 C768 265 785 248 790 210 Z" fill="#FFF4E2"/>
+  <!-- fork -->
+  <g fill="#FFF4E2">
+    <rect x="95" y="330" width="22" height="130" rx="11"/>
+    <rect x="135" y="330" width="22" height="130" rx="11"/>
+    <rect x="175" y="330" width="22" height="130" rx="11"/>
+    <path d="M95 440 H197 V470 C197 505 172 520 160 525 V740 C160 760 147 772 146 772 C145 772 132 760 132 740 V525 C120 520 95 505 95 470 Z" />
+  </g>
+  <!-- knife -->
+  <path d="M885 330 C940 360 950 480 910 540 L910 740 C910 760 897 772 886 772 C875 772 862 760 862 740 V330 Z" fill="#FFF4E2" transform="translate(0 20)"/>
+</svg>
