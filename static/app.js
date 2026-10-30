@@ -42,6 +42,7 @@ function openMenu(){
     <button class="b" style="width:100%;margin:6px 0" id="m1">Edit household &amp; allergies</button>
     <button class="b" style="width:100%;margin:6px 0" id="m2">Update kitchen photos</button>
     <button class="b" style="width:100%;margin:6px 0" id="m3">Connect a store <span class="mock">DEMO</span></button>
+    <a class="b" href="/guide" style="display:block;text-align:center;text-decoration:none;width:100%;margin:6px 0">Guide &amp; save to home screen</a>
     <button class="b" style="width:100%;margin:6px 0;color:#a00" id="m4">Reset everything</button>
     <p class="tiny">Your kitchen picture is stored on this phone. Photos are analyzed and then discarded; nothing is kept on the server.</p>`);
   $('#m1').onclick=()=>{closeSheet(); ui.wizard=true; ui.step=1; render();};
@@ -55,7 +56,7 @@ function closeSheet(){ $('#sheet').classList.add('hidden'); }
 // ----------------------------------------------------------- wizard
 function wizardHTML(){
   const st = ui.step;
-  const head = `<header class="top"><img src="/icon-180.png" alt=""><h1>Kitchen OS</h1></header><main>`;
+  const head = `<header class="top"><img src="/icon-180.png" alt=""><h1>Kitchen OS</h1><a href="/guide" style="font-size:14px;color:var(--mute)">Guide</a></header><main>`;
   if (st===1) {
     if (!S.members.length) S.members.push({id:uid(), name:'', kid:false, allergies:[], diets:[]});
     return head + `<div class="step">STEP 1 OF 4</div><h2>Who lives here?</h2><p class="sub">Just first names. This is how I check dinner against everyone.</p>

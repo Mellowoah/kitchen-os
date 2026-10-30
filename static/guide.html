@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kitchen OS - Guide</title>
+<meta name="theme-color" content="#E4503A">
+<meta name="description" content="Kitchen OS answers 'What are we eating tonight?' in seconds. How to use it and save it to your home screen.">
+<meta property="og:title" content="Kitchen OS - what are we eating tonight?">
+<meta property="og:description" content="A free app that picks tonight's dinner from what you already have.">
+<meta property="og:image" content="/icon-512.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<style>
+:root{--bg:#FFF6EA;--ink:#3B2417;--mute:#8A6F5E;--line:#F0DFCB;--acc:#E4503A;--acc2:#FF8A3D;--soft:#FFEBD6}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 -apple-system,BlinkMacSystemFont,"SF Pro Text",Segoe UI,Roboto,sans-serif}
+.wrap{max-width:560px;margin:0 auto;padding:calc(22px + env(safe-area-inset-top)) 18px calc(40px + env(safe-area-inset-bottom))}
+.hero{text-align:center;padding:6px 0 4px}
+.hero img{width:112px;height:112px;border-radius:26px;box-shadow:0 10px 28px rgba(228,80,58,.28)}
+h1{font-size:32px;margin:14px 0 4px;letter-spacing:-.6px}
+.tag{font-size:18px;margin:0;color:var(--ink)}
+.tag b{color:var(--acc)}
+.not{color:var(--mute);font-size:14px;margin:6px 0 0}
+.btn{display:block;width:100%;text-align:center;text-decoration:none;font-weight:700;font-size:17px;padding:15px 16px;border-radius:16px;margin:14px 0 0}
+.btn.p{background:linear-gradient(135deg,var(--acc2),var(--acc));color:#fff;box-shadow:0 6px 16px rgba(228,80,58,.3)}
+.btn.s{background:var(--soft);color:#8a3b14}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.8px;color:var(--mute);margin:30px 0 10px}
+.card{background:#fff;border-radius:18px;padding:6px 16px;box-shadow:0 1px 0 var(--line)}
+.row{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.n{flex:none;width:28px;height:28px;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px;margin-top:1px}
+.ic{flex:none;font-size:22px;line-height:1.2}
+.row p{margin:0}
+.row small{display:block;color:var(--mute);font-size:14px}
+.save{background:linear-gradient(160deg,#fff,#FFEBD6);border:2px solid #FFD2A8;border-radius:20px;padding:14px 16px}
+.save h3{margin:0 0 2px;font-size:20px}
+.save .ns{color:var(--acc);font-weight:700;font-size:14px;margin:0 0 8px}
+.plat{background:#fff;border-radius:14px;padding:10px 14px;margin-top:10px}
+.plat b{display:block;margin-bottom:2px}
+.plat ol{margin:4px 0 0;padding-left:20px}
+.plat li{margin:3px 0}
+.shr{display:inline-block;vertical-align:-4px;width:18px;height:18px}
+.note{background:#FFF4D6;border:1px solid #F0D58A;border-radius:14px;padding:12px 14px;font-size:14px;color:#6b4a0a;margin-top:26px}
+.credit{text-align:center;color:var(--mute);margin-top:26px;font-size:14px}
+.credit b{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <img src="/icon-512.png" alt="Kitchen OS logo">
+    <h1>Kitchen OS</h1>
+    <p class="tag">Answers <b>"What are we eating tonight?"</b> in seconds.</p>
+    <p class="not">A dinner decider, not a pantry tracker.</p>
+  </div>
+  <a class="btn p" href="/">Open Kitchen OS</a>
+
+  <h2>What it's good for</h2>
+  <div class="card">
+    <div class="row"><span class="ic">🍽️</span><p><b>No more dinner debate.</b><small>Picks one meal from what you already have.</small></p></div>
+    <div class="row"><span class="ic">🥬</span><p><b>Less waste, more savings.</b><small>Uses food before it goes bad.</small></p></div>
+    <div class="row"><span class="ic">🛡️</span><p><b>Checks everyone's allergies and diets.</b><small>Shows what it checked for each family member.</small></p></div>
+    <div class="row"><span class="ic">🛒</span><p><b>Builds your shopping list</b><small>from what dinner needs and what's running low.</small></p></div>
+  </div>
+
+  <h2>How to use it</h2>
+  <div class="card">
+    <div class="row"><span class="n">1</span><p><b>Tell it who lives here</b><small>Add your household and any allergies or diets.</small></p></div>
+    <div class="row"><span class="n">2</span><p><b>Snap your kitchen</b><small>Take a photo of the fridge, freezer and pantry.</small></p></div>
+    <div class="row"><span class="n">3</span><p><b>Get tonight's pick</b><small>One meal, with the reasons why, and what to buy.</small></p></div>
+    <div class="row"><span class="n">4</span><p><b>Chat with the assistant</b><small>Say things like "we used all the yogurt" or "add milk".</small></p></div>
+  </div>
+
+  <h2>Save it to your home screen</h2>
+  <div class="save">
+    <h3>Use it like an app</h3>
+    <p class="ns">No app store needed. It's free.</p>
+    <div class="plat"><b>iPhone</b>
+      <ol>
+        <li>Open this site in <b style="display:inline">Safari</b></li>
+        <li>Tap the Share button
+          <svg class="shr" viewBox="0 0 24 24" fill="none" stroke="#E4503A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M6 11H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-1"/></svg></li>
+        <li>Choose <b style="display:inline">Add to Home Screen</b>, then tap Add</li>
+      </ol>
+    </div>
+    <div class="plat"><b>Android</b>
+      <ol>
+        <li>Open this site in <b style="display:inline">Chrome</b></li>
+        <li>Tap the ⋮ menu (top right)</li>
+        <li>Choose <b style="display:inline">Add to Home screen</b> or <b style="display:inline">Install app</b></li>
+      </ol>
+    </div>
+  </div>
+
+  <a class="btn s" href="/kitchen-os-logo-1024.png" download="kitchen-os-logo.png">⬇︎ Download logo (PNG)</a>
+
+  <div class="note"><b>Always check labels.</b> Allergy and diet checks use general food knowledge, not product labels, so they are a helping hand and never a guarantee. Verify packaging yourself.</div>
+
+  <p class="credit">Created by <b>Mellow</b></p>
+  <a class="btn p" href="/">Open Kitchen OS</a>
+</div>
+</body>
+</html>

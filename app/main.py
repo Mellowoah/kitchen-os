@@ -291,6 +291,11 @@ async def cart(req: Request):
 def index():
     return FileResponse(os.path.join(STATIC, "index.html"), headers={"Cache-Control": "no-cache"})
 
+@app.get("/guide")
+@app.get("/about")
+def guide():
+    return FileResponse(os.path.join(STATIC, "guide.html"), media_type="text/html", headers={"Cache-Control": "no-cache"})
+
 @app.get("/sw.js")
 def sw():
     return FileResponse(os.path.join(STATIC, "sw.js"), media_type="application/javascript", headers={"Cache-Control": "no-cache"})

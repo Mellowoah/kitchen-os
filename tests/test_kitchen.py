@@ -153,3 +153,12 @@ def test_pwa_files_served():
     for p in ("/icon-180.png", "/icon-192.png", "/icon-512.png", "/apple-touch-icon.png", "/sw.js"):
         assert c.get(p).status_code == 200, p
     assert "apple-touch-icon" in c.get("/").text
+
+
+def test_guide_page_served():
+    from fastapi.testclient import TestClient
+    from app.main import app
+    c = TestClient(app)
+    r = c.get("/guide")
+    assert r.status_code == 200 and "Created by" in r.text and "Add to Home Screen" in r.text
+    assert c.get("/kitchen-os-logo-1024.png").status_code == 200
