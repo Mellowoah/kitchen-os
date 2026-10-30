@@ -78,7 +78,7 @@ function wizardHTML(){
   const head = `<header class="top"><img src="/icon-180.png" alt=""><h1>Kitchen OS</h1><a href="/guide" style="font-size:14px;color:var(--mute)">Guide</a></header><main>`;
   if (st===1) {
     if (!S.members.length) S.members.push({id:uid(), name:'', kid:false, allergies:[], diets:[]});
-    return head + `<div class="step">STEP 1 OF 4</div><h2>Who lives here?</h2><p class="sub">Just first names. This is how I check dinner against everyone.</p>
+    return head + `<div class="step">STEP 1 OF 4</div><h2>Who are we preparing for?</h2><p class="sub">Just first names. This is how I check dinner against everyone.</p>
       ${S.members.map((m,i)=>`<div class="member"><input type="text" data-n="${i}" placeholder="Name" value="${esc(m.name)}" maxlength="24">
         <div class="chips" style="margin-top:10px"><button class="chip ${m.kid?'on':''}" data-kid="${i}">Child</button>${S.members.length>1?`<button class="chip" data-del="${i}">Remove</button>`:''}</div></div>`).join('')}
       <button class="link" id="addm">+ Add another person</button>

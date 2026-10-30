@@ -1,0 +1,20 @@
+import puppeteer from "/workspace/pptr/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js";
+const BASE = process.argv[2];
+const b = await puppeteer.launch({ executablePath: "/usr/bin/google-chrome", args: ["--no-sandbox"] });
+const p = await b.newPage();
+await p.setViewport({ width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+await p.goto(BASE, { waitUntil: "networkidle0" });
+const state = await p.evaluate(async () => {
+  const r = await fetch("/api/demo", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+  const s = (await r.json()).state;
+  s.setup_done = true;
+  s.members = [{ id: "a", name: "Mellow", allergies: [], diets: ["low sodium"] }, { id: "b", name: "Maya", allergies: ["peanuts"], diets: [] }];
+  localStorage.setItem("kitchenos.v1", JSON.stringify(s));
+  return s.items.length;
+});
+console.log("demo items", state);
+await p.reload({ waitUntil: "networkidle0" });
+await new Promise(r => setTimeout(r, 1500));
+await p.screenshot({ path: "shots/live-tonight.png" });
+console.log(await p.evaluate(() => document.querySelector("h1,h2,.meal-name,.card")?.innerText?.slice(0, 80)));
+await b.close();

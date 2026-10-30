@@ -18,3 +18,8 @@ def test_social_tags_on_pages():
                   'name="twitter:card" content="summary_large_image"', 'name="twitter:image" content="%s/share-card.png"' % B,
                   'property="og:image:alt"', 'name="twitter:image:alt"', 'property="og:url"', 'name="twitter:title"'):
             assert t in h, (path, t)
+
+def test_onboarding_wording():
+    js = c.get("/app.js").text
+    assert "Who are we preparing for?" in js and "Who lives here" not in js
+    assert "Who lives here" not in c.get("/guide").text and "who lives here" not in c.get("/guide").text
