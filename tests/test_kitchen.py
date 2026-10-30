@@ -162,3 +162,13 @@ def test_guide_page_served():
     r = c.get("/guide")
     assert r.status_code == 200 and "Created by" in r.text and "Add to Home Screen" in r.text
     assert c.get("/kitchen-os-logo-1024.png").status_code == 200
+
+
+def test_add_to_shopping_list_phrase():
+    from app import assistant
+    s = kitchen(items=BASIC)
+    r = assistant.handle(s, "add paper towels to the shopping list", T)
+    assert any("paper" in x["name"].lower() for x in s["shopping"]), r
+    assistant.handle(s, "put half & half on the grocery list", T)
+    assert not any(x["name"].lower().startswith("half-") or x["name"].lower() == "half" for x in s["shopping"]), s["shopping"]
+    assert len(s["shopping"]) == 2

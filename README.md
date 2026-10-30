@@ -17,7 +17,7 @@ FastAPI (`app/`) serving a mobile-first vanilla-JS PWA (`static/`). No database:
 `LLM_API_KEY` (Google Gemini API key) is read from the environment only. Vision: `gemini-3.5-flash` (falls back to `-flash-lite`). If the key is missing or a call fails, everything still works: ranking is heuristic, the assistant uses its rules, photos can be replaced by "What did we miss?" chat or the sample kitchen.
 
 ## Mocked / stubbed
-Retailer connections, cart building, receipt OCR, hardware cameras, real prices (rough estimates), weather. Marked DEMO in the UI.
+Receipt OCR, hardware cameras, real prices (rough estimates), weather. Marked DEMO in the UI.
 
 ## Safety
 Allergy/diet checks use general food knowledge, never product labels. The app never claims a meal is safe and always shows a "verify labels" note.

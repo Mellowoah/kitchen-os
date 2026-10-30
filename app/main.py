@@ -277,16 +277,6 @@ async def retailer(req: Request):
     state["retailer"] = body.get("retailer")
     return {"state": state, "mock": True}
 
-@app.post("/api/cart")
-async def cart(req: Request):
-    """MOCK: pretend to send the list to the connected retailer."""
-    body = await req.json()
-    state, today = st_of(body), today_of(body)
-    sh = engine.shopping(state, today)
-    names = [x["name"] for x in sh["need_soon"]]
-    return {"mock": True, "retailer": state.get("retailer"), "items": names,
-            "message": f"Demo only: nothing was ordered. With a real connection I'd build a {state.get('retailer') or 'store'} cart with {len(names)} items for you to review."}
-
 @app.get("/")
 def index():
     return FileResponse(os.path.join(STATIC, "index.html"), headers={"Cache-Control": "no-cache"})

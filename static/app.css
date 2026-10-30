@@ -90,3 +90,8 @@ table.k th{color:var(--mute);font-size:11px;text-transform:uppercase}
 .btns3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:12px 0 4px}
 .btns3 .b{font-size:14px;padding:12px 6px;line-height:1.15}
 .btns3 .b.primary{grid-column:1/4;font-size:19px;padding:16px}
+
+.item .finds{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:7px;font-size:12.5px;color:var(--mute)}
+.item .t small{display:block}
+.item a.find{background:#fff;border:1.5px solid #F2C9A4;color:#8A3C0E;border-radius:999px;padding:3px 10px;font-weight:700;text-decoration:none;font-size:12.5px}
+.item{flex-wrap:wrap}.item .finds{flex-basis:100%;margin-top:2px}

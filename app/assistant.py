@@ -5,12 +5,14 @@ from .meals import MEALS
 
 def _split(s):
     s = re.sub(r"[.!?]+$", "", s.strip())
+    s = re.sub(r"\bhalf\s*(?:&|and)\s*half\b", "half_and_half", s, flags=re.I)  # one item, not two
     parts = re.split(r",|\band\b|&|\bplus\b", s)
     out = []
     for p in parts:
         p = re.sub(r"^(?:all|any|some|the|our|my|more|a|an|of|rest of|the rest of|a bit of|a little)\s+", "", p.strip())
         p = re.sub(r"^(?:all|any|some|the|our|my|of|rest of|more)\s+", "", p.strip())
         p = re.sub(r"\s+(?:today|tonight|yesterday|now|already|too|as well|again|please)$", "", p.strip())
+        p = p.replace("half_and_half", "half and half")
         if p:
             out.append(p)
     return out
@@ -68,7 +70,7 @@ def handle(state, message, today, history=None):
         if not us:
             return done("Nothing looks urgent based on what I know - but my picture may be out of date. A quick fridge photo helps.")
         return done("Here's what I'd use first (my best guess, not a guarantee):\n" + "\n".join(f"- {u['text']}" for u in us))
-    if re.search(r"shopping list|grocery list|what (?:do )?(?:we|i) need to buy|what should (?:i|we) buy", low):
+    if re.search(r"shopping list|grocery list|what (?:do )?(?:we|i) need to buy|what should (?:i|we) buy", low) and not any(p.match(low) for p in P_SHOP):
         sh = engine.shopping(state, today)
         lines = []
         for lab, k in (("Need soon", "need_soon"), ("Running low", "running_low"), ("Recommended", "recommended")):

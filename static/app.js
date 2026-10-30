@@ -1,7 +1,23 @@
 'use strict';
 const ALLERGENS = ['peanuts','tree nuts','dairy','gluten','soy','egg','shellfish','fish','sesame'];
 const DIETS = ['vegetarian','vegan','keto','low carb','low sodium','diabetic'];
-const RETAILERS = ['Walmart','Publix','Kroger','Costco','Sam\'s Club','Amazon Fresh','Instacart'];
+const RETAILERS = ['Walmart','Publix','Instacart'];
+// Public search pages only. No logins, carts or orders: each link just opens that store's own search in a new tab.
+const STORES = {
+  Walmart:   q => 'https://www.walmart.com/search?q=' + encodeURIComponent(q),
+  Publix:    q => 'https://www.publix.com/search?searchTerm=' + encodeURIComponent(q),
+  Instacart: q => 'https://www.instacart.com/store/s?k=' + encodeURIComponent(q)
+};
+function storeOrder(){ return [S.retailer, ...RETAILERS].filter((r,i,a)=>r && STORES[r] && a.indexOf(r)===i); }
+function storeLinks(name){ return storeOrder().map(r=>`<a class="find" href="${esc(STORES[r](name))}" target="_blank" rel="noopener noreferrer">${esc(r)}</a>`).join(''); }
+function listText(shop){
+  const secs=[['need_soon','Need soon'],['running_low','Running low'],['recommended','Recommended']];
+  return secs.filter(([k])=>shop[k].length).map(([k,l])=>l+':\n'+shop[k].map(x=>'- '+x.name).join('\n')).join('\n\n');
+}
+async function copyText(t){
+  try { await navigator.clipboard.writeText(t); return true; } catch(e){}
+  try { const a=document.createElement('textarea'); a.value=t; a.style.position='fixed'; a.style.opacity='0'; document.body.appendChild(a); a.select(); const ok=document.execCommand('copy'); a.remove(); return ok; } catch(e){ return false; }
+}
 const VERIFY = 'Ingredient checks use general food knowledge, not product labels. Always verify labels and packaging yourself. Brands, "may contain" warnings and cross-contact are things I can\'t see.';
 const KEY = 'kitchenos.v1';
 const $ = (s, r=document) => r.querySelector(s);
@@ -41,7 +57,7 @@ function openMenu(){
   sheet(`<h2 style="font-size:20px">Settings</h2>
     <button class="b" style="width:100%;margin:6px 0" id="m1">Edit household &amp; allergies</button>
     <button class="b" style="width:100%;margin:6px 0" id="m2">Update kitchen photos</button>
-    <button class="b" style="width:100%;margin:6px 0" id="m3">Connect a store <span class="mock">DEMO</span></button>
+    <button class="b" style="width:100%;margin:6px 0" id="m3">Usual store (for shopping links)</button>
     <a class="b" href="/guide" style="display:block;text-align:center;text-decoration:none;width:100%;margin:6px 0">Guide &amp; save to home screen</a>
     <button class="b" style="width:100%;margin:6px 0;color:#a00" id="m4">Reset everything</button>
     <p class="tiny">Your kitchen picture is stored on this phone. Photos are analyzed and then discarded; nothing is kept on the server.</p>`);
@@ -84,9 +100,8 @@ function wizardHTML(){
       <button class="link" id="sample">No photos handy? Try a sample kitchen</button>
       <div class="btns"><button class="b" id="back">Back</button><button class="b" id="next3">${(S.items.length)?'Next':'Skip for now'}</button></div></main>`;
   }
-  if (st===4) return head + `<div class="step">STEP 4 OF 4 · OPTIONAL</div><h2>Connect a store <span class="mock">DEMO</span></h2><p class="sub">Purchase history would help me notice what you buy. This prototype only pretends to connect, nothing is shared or ordered.</p>
+  if (st===4) return head + `<div class="step">STEP 4 OF 4 · OPTIONAL</div><h2>Your usual store</h2><p class="sub">Kitchen OS doesn't log in to stores, build carts or place orders. In the Shopping tab, each item gets a "Find it" link that opens a search for it on Walmart, Publix or Instacart, in a new tab. Pick your usual store and its link goes first.</p>
       <div class="chips">${RETAILERS.map(r=>`<button class="chip ${S.retailer===r?'on':''}" data-r="${esc(r)}">${esc(r)}</button>`).join('')}</div>
-      ${S.retailer?`<p class="sub" style="margin-top:12px">Pretend-connected to ${esc(S.retailer)}. In the real app you'd sign in with the store.</p>`:''}
       <div class="btns"><button class="b" id="back">Back</button><button class="b primary" style="grid-column:auto;font-size:16px" id="finish">${S.retailer?'Finish':'Skip &amp; finish'}</button></div></main>`;
 }
 function resultsHTML(res){
@@ -204,15 +219,15 @@ async function viewShop(){
   const sec=[['need_soon','Need soon'],['running_low','Running low'],['recommended','Recommended']];
   const total = ui.shop.need_soon.reduce((a,x)=>a+(x.price||0),0);
   m.innerHTML = `<h2>Shopping</h2><p class="sub">Built automatically from what dinner needs and what's probably running out. These are guesses, not a count.</p>
-    ${sec.map(([k,l])=>`<h3>${l}</h3>${ui.shop[k].length?ui.shop[k].map((x,i)=>`<div class="item"><div class="t"><b>${esc(x.name)}</b><small>${esc(x.why)}${x.price?` · ~$${x.price.toFixed(2)}`:''}</small></div><button data-bought="${k}|${i}">Got it</button><button class="x" data-dis="${k}|${i}" aria-label="Not needed">✕</button></div>`).join(''):'<p class="tiny">Nothing right now.</p>'}`).join('')}
+    ${sec.map(([k,l])=>`<h3>${l}</h3>${ui.shop[k].length?ui.shop[k].map((x,i)=>`<div class="item"><div class="t"><b>${esc(x.name)}</b><small>${esc(x.why)}${x.price?` · ~$${x.price.toFixed(2)}`:''}</small></div><button data-bought="${k}|${i}">Got it</button><button class="x" data-dis="${k}|${i}" aria-label="Not needed">✕</button><div class="finds"><span>Find it:</span>${storeLinks(x.name)}</div></div>`).join(''):'<p class="tiny">Nothing right now.</p>'}`).join('')}
     <div style="display:flex;gap:8px;margin-top:14px"><input type="text" id="newi" placeholder="Add something (e.g. paper towels)"><button class="b" id="addi" style="padding:0 16px">Add</button></div>
-    <button class="b" style="width:100%;margin-top:14px" id="cart">${S.retailer?'Build '+esc(S.retailer)+' cart':'Send to a store'} <span class="mock">DEMO</span></button>
-    <p class="tiny">Need-soon total ≈ $${total.toFixed(0)} (rough guess).</p>`;
+    <button class="b primary" style="width:100%;margin-top:14px;font-size:16px" id="copy">Copy list</button>
+    <p class="tiny">Need-soon total ≈ $${total.toFixed(0)} (rough guess). "Find it" opens a search on the store's own site in a new tab. Nothing is ordered and no login is needed.</p>`;
   m.querySelectorAll('[data-bought]').forEach(b=>b.onclick=async()=>{ const [k,i]=b.dataset.bought.split('|'); const r=await api('shopping/bought',{name:ui.shop[k][+i].name}); setState(r.state); ui.shop=r.shopping; ui.tonight=null; ui.week=null; viewShop(); toast('Added to what I think you have'); });
   m.querySelectorAll('[data-dis]').forEach(b=>b.onclick=async()=>{ const [k,i]=b.dataset.dis.split('|'); const r=await api('shopping/dismiss',{name:ui.shop[k][+i].name}); setState(r.state); ui.shop=r.shopping; viewShop(); });
   const add = async () => { const v=$('#newi').value.trim(); if(!v) return; const r=await api('assistant',{message:'add '+v+' to the shopping list'}); setState(r.state); ui.shop=null; viewShop(); };
   $('#addi').onclick=add; $('#newi').onkeydown=e=>{ if(e.key==='Enter') add(); };
-  $('#cart').onclick=async()=>{ const r=await api('cart'); sheet(`<h2 style="font-size:20px">Demo cart <span class="mock">DEMO</span></h2><p>${esc(r.message)}</p>${r.items.map(i=>`<div class="buy">${esc(i)}</div>`).join('')}`); };
+  $('#copy').onclick=async()=>{ const ok=await copyText(listText(ui.shop)); toast(ok?'Shopping list copied':'Couldn\'t copy - select and copy it manually'); };
 }
 
 // ---------------------------------------------------------- assistant
